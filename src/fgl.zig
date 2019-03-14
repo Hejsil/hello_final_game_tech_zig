@@ -1,7 +1,10 @@
-const c = @cImport({
-    @cDefine("FGL_IMPLEMENTATION", "");
-    @cInclude("final_dynamic_opengl.h");
-});
+const c = @cImport(@cInclude("final_dynamic_opengl.h"));
+
+extern fn fgl_gl_clear(c.GLbitfield) void;
+extern fn fgl_gl_begin(c.GLenum) void;
+extern fn fgl_gl_color_3f(c.GLfloat, c.GLfloat, c.GLfloat) void;
+extern fn fgl_gl_vertex_2f(c.GLfloat, c.GLfloat) void;
+extern fn fgl_gl_end() void;
 
 pub fn loadOpenGl(load_functions: bool) !void {
     if (!c.fglLoadOpenGL(load_functions))
@@ -32,6 +35,33 @@ pub const gl = struct {
     pub const ALL_ATTRIB_BITS = c.GL_ALL_ATTRIB_BITS;
 
     pub fn clear(mask: c.GLbitfield) void {
-        c.glClear.*(mask);
+        fgl_gl_clear(mask);
+    }
+
+    pub const POINTS = c.GL_POINTS;
+    pub const LINES = c.GL_LINES;
+    pub const LINE_LOOP = c.GL_LINE_LOOP;
+    pub const LINE_STRIP = c.GL_LINE_STRIP;
+    pub const TRIANGLES = c.GL_TRIANGLES;
+    pub const TRIANGLE_STRIP = c.GL_TRIANGLE_STRIP;
+    pub const TRIANGLE_FAN = c.GL_TRIANGLE_FAN;
+    pub const QUADS = c.GL_QUADS;
+    pub const QUAD_STRIP = c.GL_QUAD_STRIP;
+    pub const POLYGON = c.GL_POLYGON;
+
+    pub fn begin(mode: c.GLenum) void {
+        fgl_gl_begin(mode);
+    }
+
+    pub fn color3f(red: c.GLfloat, green: c.GLfloat, blue: c.GLfloat) void {
+        fgl_gl_color_3f(red, green, blue);
+    }
+
+    pub fn vertex2f(x: c.GLfloat, y: c.GLfloat) void {
+        fgl_gl_vertex_2f(x, y);
+    }
+
+    pub fn end() void {
+        fgl_gl_end();
     }
 };

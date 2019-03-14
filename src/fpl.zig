@@ -25,3 +25,4 @@ pub fn init(flags: InitFlags.Type, settings: ?*const Settings) !void {
 
 pub const release = c.fplPlatformRelease;
 pub const windowUpdate = c.fplWindowUpdate;
+pub const videoFlip = c.fplVideoFlip;
